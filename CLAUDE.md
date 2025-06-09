@@ -26,8 +26,17 @@ python main.py
 - Add new dependency: `uv add <package-name>`
 
 ### Code quality
-- Format and lint code: `ruff check --fix`
-- Format code only: `ruff format`
+- Format and lint code: `uv run ruff check --fix`
+- Format code only: `uv run ruff format`
+- Type check code: `uv run pyright`
+- Run tests: `uv run pytest`
+
+**IMPORTANT**: All code must pass ruff, pyright, and pytest checks before committing.
+
+### Code Style Requirements
+- Never use `any` type - all code must be explicitly typed
+- Use Union types instead of Any for flexible typing
+- Use Mapping instead of Dict for covariant parameter types 
 
 ## Project Structure
 
@@ -44,8 +53,11 @@ pylisticles/
 │   │   └── __init__.py        # Markdown persistence layer
 │   └── utils/
 │       └── __init__.py        # Utility functions
+├── tests/                     # Unit tests with pytest
+│   ├── __init__.py
+│   └── test_models.py         # Tests for data models
 ├── main.py                    # Entry point - runs PylisticlesApp
-├── pyproject.toml            # Dependencies: textual, ruff
+├── pyproject.toml            # Dependencies: textual, ruff, pyright, pytest
 └── README.md                 # Project documentation
 ```
 
@@ -109,3 +121,8 @@ fields:
 - Uses uv for package management instead of pip
 - Dependencies: textual>=3.3.0, ruff>=0.11.13
 - Data directory: `~/pylisticles-data/` (markdown files)
+
+## Coding Guidelines
+- Never use the `any` type. All code should be explicitly typed.
+- Code has to pass both ruff and pyright checks before it can be commited. 
+- Tests have to pass before any code can be commited. 

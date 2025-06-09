@@ -8,3 +8,9 @@ dependencies = [
     "ruff>=0.11.13",
     "textual>=3.3.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.401",
+    "pytest>=8.4.0",
+]
