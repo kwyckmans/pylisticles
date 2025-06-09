@@ -8,7 +8,9 @@
       "Bash(ruff format:*)",
       "Bash(uv run ruff:*)",
       "Bash(uv run:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)"
     ],
     "deny": []
   }
