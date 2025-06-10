@@ -5,12 +5,43 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pyyaml>=6.0.2",
     "ruff>=0.11.13",
     "textual>=3.3.0",
 ]
 
 [dependency-groups]
 dev = [
+    "coverage>=7.6.0",
+    "pre-commit>=4.0.0",
     "pyright>=1.1.401",
     "pytest>=8.4.0",
 ]
+
+[tool.coverage.run]
+source = ["pylisticles"]
+branch = true
+omit = [
+    "tests/*",
+    "demo_*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+precision = 2
+fail_under = 80
+
+[tool.coverage.html]
+directory = "htmlcov"

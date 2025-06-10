@@ -24,7 +24,7 @@ Pylisticles allows you to organize different types of collections - whether it's
 ![Collection List](screenshots/collection-list.png)
 *Main view showing available collections with item counts. Navigate using arrow keys and press Enter to view details.*
 
-### Collection Details View  
+### Collection Details View
 ![Collection Details](screenshots/collection-details.png)
 *Detailed view of a collection showing all items in a table format with custom fields.*
 

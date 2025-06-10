@@ -30,13 +30,17 @@ python main.py
 - Format code only: `uv run ruff format`
 - Type check code: `uv run pyright`
 - Run tests: `uv run pytest`
+- Test coverage: `uv run coverage run -m pytest && uv run coverage report`
+- Coverage HTML report: `uv run coverage html` (opens in `htmlcov/index.html`)
+- Pre-commit hooks: `uv run pre-commit run --all-files`
+- Install pre-commit hooks: `uv run pre-commit install`
 
-**IMPORTANT**: All code must pass ruff, pyright, and pytest checks before committing.
+**IMPORTANT**: All code must pass ruff, pyright, and pytest checks before committing. Pre-commit hooks will automatically run these checks. Coverage is tracked but not required to pass.
 
 ### Code Style Requirements
 - Never use `any` type - all code must be explicitly typed
 - Use Union types instead of Any for flexible typing
-- Use Mapping instead of Dict for covariant parameter types 
+- Use Mapping instead of Dict for covariant parameter types
 
 ## Project Structure
 
@@ -67,6 +71,7 @@ pylisticles/
 - Modern, async-powered TUI library built on Rich
 - 16.7M colors, mouse support, smooth animations
 - Web-like component approach for building interfaces
+- **IMPORTANT**: Only use CSS that is valid for Textual.
 
 ### Data Model
 - **Collection**: name, type, fields, items, timestamps
@@ -80,7 +85,7 @@ Each collection stored as separate `.md` file:
 ---
 collection:
   name: "Guitar Practice"
-  type: "music" 
+  type: "music"
   created_at: "2024-01-15T10:30:00Z"
 fields:
   - name: "song_name"
@@ -101,7 +106,7 @@ fields:
 
 ### Phase 1: Foundation & Research ✅ COMPLETED
 1. ✅ Research TUI frameworks - Selected Textual
-2. ✅ Design data model - Collection/Field/Item with flexible schema  
+2. ✅ Design data model - Collection/Field/Item with flexible schema
 3. ✅ Define markdown format - YAML frontmatter + markdown tables
 4. ✅ Set up project structure - Created modules, added Textual dependency
 
@@ -112,7 +117,7 @@ fields:
 8. ⏳ Item CRUD - Manage individual items within collections
 
 ### Phase 3: Advanced Features (PLANNED)
-9. ⏳ Custom fields - Allow defining different field types per collection  
+9. ⏳ Custom fields - Allow defining different field types per collection
 10. ⏳ Search & filtering - Find items across collections
 
 ## Key Information
@@ -124,5 +129,11 @@ fields:
 
 ## Coding Guidelines
 - Never use the `any` type. All code should be explicitly typed.
-- Code has to pass both ruff and pyright checks before it can be commited. 
-- Tests have to pass before any code can be commited. 
+- Code has to pass both ruff and pyright checks before it can be commited.
+- Tests have to pass before any code can be commited.
+
+## Test Writing Guidelines
+- Feel free to add test skeletons, with a good set of use cases and clear naming but NEVER fill in the actual test. If, and only if, the name is too complicated, add a comment explaining the expected behaviour of the test. Inside the test, add a TODO comment.
+
+## Commit Guidelines
+- Perform a commit after implementing a logical feature or step from your plan. Use a commit message with a max length of 80 characters.

@@ -16,18 +16,18 @@ class TestCollectionStorage:
         """Test saving and loading an empty collection."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             # Create empty collection
             collection = Collection(name="Test Collection", type="test")
             collection.fields = [
                 Field(name="title", type="text", required=True),
                 Field(name="completed", type="boolean", required=False),
             ]
-            
+
             # Save and load
             storage.save_collection(collection)
             loaded = storage.load_collection("Test Collection")
-            
+
             assert loaded.name == collection.name
             assert loaded.type == collection.type
             assert len(loaded.fields) == 2
@@ -43,7 +43,7 @@ class TestCollectionStorage:
         """Test saving and loading a collection with items."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             # Create collection with items
             collection = Collection(name="Tasks", type="todo")
             collection.fields = [
@@ -51,24 +51,24 @@ class TestCollectionStorage:
                 Field(name="priority", type="number", required=False),
                 Field(name="done", type="boolean", required=False),
             ]
-            
+
             # Add items
             collection.add_item({"task": "Buy groceries", "priority": 1, "done": False})
             collection.add_item({"task": "Walk dog", "priority": 2, "done": True})
-            
+
             # Save and load
             storage.save_collection(collection)
             loaded = storage.load_collection("Tasks")
-            
+
             assert loaded.name == "Tasks"
             assert len(loaded.items) == 2
-            
+
             # Check first item
             item1 = loaded.items[0]
             assert item1.data["task"] == "Buy groceries"
             assert item1.data["priority"] == 1
             assert item1.data["done"] is False
-            
+
             # Check second item
             item2 = loaded.items[1]
             assert item2.data["task"] == "Walk dog"
@@ -79,17 +79,17 @@ class TestCollectionStorage:
         """Test listing collections."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             # Initially empty
             assert storage.list_collections() == []
-            
+
             # Create and save collections
             coll1 = Collection(name="Collection 1", type="test")
             coll2 = Collection(name="Collection 2", type="test")
-            
+
             storage.save_collection(coll1)
             storage.save_collection(coll2)
-            
+
             # Should list both
             collections = storage.list_collections()
             assert set(collections) == {"Collection 1", "Collection 2"}
@@ -98,16 +98,16 @@ class TestCollectionStorage:
         """Test deleting a collection."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             # Create and save collection
             collection = Collection(name="To Delete", type="test")
             storage.save_collection(collection)
-            
+
             assert storage.collection_exists("To Delete")
-            
+
             # Delete it
             storage.delete_collection("To Delete")
-            
+
             assert not storage.collection_exists("To Delete")
             assert "To Delete" not in storage.list_collections()
 
@@ -115,24 +115,24 @@ class TestCollectionStorage:
         """Test checking if collection exists."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             assert not storage.collection_exists("Nonexistent")
-            
+
             # Create collection
             collection = Collection(name="Exists", type="test")
             storage.save_collection(collection)
-            
+
             assert storage.collection_exists("Exists")
 
     def test_sanitize_filename(self):
         """Test filename sanitization."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             # Test with problematic characters
             collection = Collection(name="Test/Collection<>:|?*", type="test")
             storage.save_collection(collection)
-            
+
             # Should be able to load it back
             loaded = storage.load_collection("Test/Collection<>:|?*")
             assert loaded.name == "Test/Collection<>:|?*"
@@ -141,7 +141,7 @@ class TestCollectionStorage:
         """Test loading nonexistent collection raises error."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             with pytest.raises(PersistenceError, match="not found"):
                 storage.load_collection("Nonexistent")
 
@@ -149,7 +149,7 @@ class TestCollectionStorage:
         """Test deleting nonexistent collection raises error."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             with pytest.raises(PersistenceError, match="not found"):
                 storage.delete_collection("Nonexistent")
 
@@ -157,10 +157,10 @@ class TestCollectionStorage:
         """Test that data directory is created if it doesn't exist."""
         with tempfile.TemporaryDirectory() as temp_dir:
             nested_dir = Path(temp_dir) / "nested" / "data"
-            
+
             # Directory doesn't exist yet
             assert not nested_dir.exists()
-            
+
             # Creating storage should create directory
             CollectionStorage(str(nested_dir))
             assert nested_dir.exists()
@@ -170,7 +170,7 @@ class TestCollectionStorage:
         """Test that different field types are preserved through save/load."""
         with tempfile.TemporaryDirectory() as temp_dir:
             storage = CollectionStorage(temp_dir)
-            
+
             collection = Collection(name="Types Test", type="test")
             collection.fields = [
                 Field(name="text_field", type="text"),
@@ -178,22 +178,24 @@ class TestCollectionStorage:
                 Field(name="bool_field", type="boolean"),
                 Field(name="select_field", type="select", options=["A", "B", "C"]),
             ]
-            
+
             # Add item with different types
-            collection.add_item({
-                "text_field": "Hello World",
-                "number_field": 42,
-                "bool_field": True,
-                "select_field": "A",
-            })
-            
+            collection.add_item(
+                {
+                    "text_field": "Hello World",
+                    "number_field": 42,
+                    "bool_field": True,
+                    "select_field": "A",
+                }
+            )
+
             storage.save_collection(collection)
             loaded = storage.load_collection("Types Test")
-            
+
             # Check field definitions
             field_map = {f.name: f for f in loaded.fields}
             assert field_map["select_field"].options == ["A", "B", "C"]
-            
+
             # Check item data types
             item = loaded.items[0]
             assert item.data["text_field"] == "Hello World"

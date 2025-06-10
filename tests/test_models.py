@@ -38,7 +38,7 @@ class TestItem:
         """Test basic item creation."""
         data = {"title": "Test Song", "artist": "Test Artist"}
         item = Item(data=data)
-        
+
         assert item.data == data
         assert isinstance(item.id, str)
         assert len(item.id) > 0
@@ -63,7 +63,7 @@ class TestCollection:
     def test_collection_creation(self) -> None:
         """Test basic collection creation."""
         collection = Collection(name="Test Collection", type="music")
-        
+
         assert collection.name == "Test Collection"
         assert collection.type == "music"
         assert collection.fields == []
@@ -77,10 +77,8 @@ class TestCollection:
             Field(name="title", type="text", required=True),
             Field(name="rating", type="number"),
         ]
-        collection = Collection(
-            name="Music Collection", type="music", fields=fields
-        )
-        
+        collection = Collection(name="Music Collection", type="music", fields=fields)
+
         assert collection.fields == fields
         assert collection.get_field_names() == ["title", "rating"]
 
@@ -88,10 +86,10 @@ class TestCollection:
         """Test adding items to collection."""
         collection = Collection(name="Test Collection", type="music")
         data = {"title": "Test Song", "artist": "Test Artist"}
-        
+
         initial_updated = collection.updated_at
         item = collection.add_item(data)
-        
+
         assert len(collection.items) == 1
         assert collection.items[0] == item
         assert item.data == data
