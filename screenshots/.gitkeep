@@ -1,0 +1,17 @@
+# Screenshots Directory
+
+This directory contains screenshots of the Pylisticles TUI application.
+
+## Taking Screenshots
+
+To capture screenshots:
+
+1. Launch the app: `uv run python main.py`
+2. Use your system's screenshot tool to capture:
+   - Main collection list view
+   - Collection detail view (select a collection to see items)
+3. Save screenshots as:
+   - `collection-list.png` - Main view showing all collections
+   - `collection-details.png` - Detail view showing items in a collection
+
+The app uses the gruvbox theme with blue primary colors and good contrast for keyboard shortcuts.
