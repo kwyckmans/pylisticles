@@ -24,9 +24,9 @@ class Item:
     data: Dict[str, Union[str, int, float, bool]] = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.now)
     updated_at: datetime = field(default_factory=datetime.now)
-    
+
     def __init__(
-        self, 
+        self,
         data: Mapping[str, Union[str, int, float, bool]] | None = None,
         id: str | None = None,
         created_at: datetime | None = None,
